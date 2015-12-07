@@ -1,5 +1,6 @@
 data_100K = {
 	'size': '100K',
+	'root': './ml-latest-small/',
 	'movies': './ml-latest-small/movies.dat',
 	'ratings': './ml-latest-small/ratings.dat',
 	'tags': './ml-latest-small/tags.dat',
@@ -17,6 +18,7 @@ data_100K = {
 
 data_1M = {
 	'size': '1M',
+	'root': './ml-1m/',
 	'movies': './ml-1m/movies.dat',
 	'ratings': './ml-1m/ratings.dat',
 	'users': './ml-1m/users.dat',
@@ -34,6 +36,7 @@ data_1M = {
 
 data_10M = {
 	'size': '10M',
+	'root': './ml-10m/',
 	'movies': './ml-10m/movies.dat',
 	'ratings': './ml-10m/ratings.dat',
 	'tags': './ml-10m/tags.dat',
@@ -49,6 +52,7 @@ data_10M = {
 
 data_20M = {
 	'size': '20M',
+	'root': './ml-20m/',
 	'movies': './ml-20m/movies.dat',
 	'ratings': './ml-20m/ratings.dat',
 	'tags': './ml-20m/tags.dat',
@@ -64,6 +68,7 @@ data_20M = {
 
 data_21M = {
 	'size': '21M',
+	'root': './ml-latest-full/',
 	'movies': './ml-latest-full/movies.dat',
 	'ratings': './ml-latest-full/ratings.dat',
 	'tags': './ml-latest-full/tags.dat',

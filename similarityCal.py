@@ -46,14 +46,22 @@ def cosine_similarity(x1, x2):
 		print "result = ", sum(x1 * x2) * 1.0 / (np.linalg.norm(x1) * np.linalg.norm(x2))
 	return score
 
-def corre_coef(x1, x2):
-	index = [i for i in range(min(x1.size, x2.size)) if x1[i] != 0 and x2[i] != 0];
-	if len(index) == 0:
-		return 0
-	y1 = np.array([x1[i] for i in index])
-	y2 = np.array([x2[i] for i in index])
-	return sum(y1 * y2) * 1.0 / math.sqrt(sum(y1 * y1) * sum(y2 * y2))
+# def corre_coef(x1, x2):
+# 	index = [i for i in range(min(x1.size, x2.size)) if x1[i] != 0 and x2[i] != 0];
+# 	if len(index) == 0:
+# 		return 0
+# 	y1 = np.array([x1[i] for i in index])
+# 	y2 = np.array([x2[i] for i in index])
+# 	return sum(y1 * y2) * 1.0 / math.sqrt(sum(y1 * y1) * sum(y2 * y2))
 
+def corre_coef(x1, x2):
+	intersection = np.logical_and(x1, x2).astype(float32)
+	x1_new = x1 * intersection
+	x2_new = x2 * intersection
+	if intersection.sum() == 0:
+		return 0
+	else:
+		return cosine_similarity(x1_new, x2_new)
 
 def user_sim_measure_sparse(matrix, threshold, filename):
 	out_f = open(filename, 'w')
@@ -87,14 +95,14 @@ def user_sim_measure_sparse(matrix, threshold, filename):
 	out_f.close()
 
 def sim_measure(matrix, threshold, filename, filename2):
-	out_f = open(filename, 'w')
+	# out_f = open(filename, 'w')
 	rows = matrix.shape[0]
 	# print "rows: ", rows
 
-	print "start output user IDs"
-	for lineNum in range(rows):
-		out_f.write(str(lineNum + 1) + '\n')
-	print 'finish output user IDs'
+	# print "start output user IDs"
+	# for lineNum in range(rows):
+	# 	out_f.write(str(lineNum + 1) + '\n')
+	# print 'finish output user IDs'
 
 	print "normalize matrix"
 	normalizeMatrix(matrix)
@@ -113,24 +121,23 @@ def sim_measure(matrix, threshold, filename, filename2):
 			row2 = matrix[x2]
 			if np.count_nonzero(row2) == 0:
 				continue
-			score = cosine_similarity(row1, row2)
-			# score = corre_coef(row1dense, row2.toarray()[0])
+			# score = cosine_similarity(row1, row2)
+			score = corre_coef(row1, row2)
 			# print x1+1, x2+1, score
 			# if score > threshold:
-			out_f.write(str(x1+1) + ',' + str(x2+1) + ',' + str(score) + '\n')
+			# out_f.write(str(x1+1) + ',' + str(x2+1) + ',' + str(score) + '\n')
 			edge_f.write(str(x1+1) + '\t' + str(x2+1) + '\t' + str(score) + '\n')
 	edge_f.close()
-	out_f.close()
+	# out_f.close()
 
 matrix = load_ratings_matrix_from_mat(data_1M)
 print "finish parsing"
 
-print "start user"
-# matrix = np.array([[1.0, 2.0, 0, 1.0, 0], [3.0, 4.0, 0, 0, 0], [0,0,1.0,0, 4]])
-# sim_measure(matrix, 0, "userFull_1M.txt", "userEdge_1M.txt")
-# print "start movie"
+# print "start user"
+# sim_measure(matrix, 0, "userFull_1M_coef.txt", "userEdge_1M_coef.txt")
+print "start movie"
 matrix = matrix.transpose()
-sim_measure(matrix, 0, "movieFull_1M.txt", "movieEdge_1M.txt")
+sim_measure(matrix, 0, "movieFull_1M_coef.txt", "movieEdge_1M_coef.txt")
 
 # x1 = np.array([1,0,2,1,0])
 # x2 = np.array([0,1,1,0,1])

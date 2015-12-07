@@ -58,14 +58,18 @@ def load_ratings_matrix_from_mat(data):
 def load_mat(filename, key):
 	return float32(loadmat(data[filename])[key])
 
-def load_user_similarity(data):
+def load_user_similarity_bio(data, key='userBioSim.mat'):
+	print "Start loading user bio similarity"
+	return float32(loadmat(data['root'] + key)['user_sim_from_bio'])
+
+def load_user_similarity(data, key='user_similarity_matrix'):
 	print "Start loading user similarity"
-	return float32(loadmat(data['user_similarity_matrix'])['user_similarity_matrix'])
+	return float32(loadmat(data['user_similarity_matrix'])[key])
 
-def load_movie_similarity(data):
+def load_movie_similarity(data, key='movie_similarity_matrix'):
 	print "Start loading movie similarity"
-	return float32(loadmat(data['movie_similarity_matrix'])['movie_similarity_matrix'])
-
+	return float32(loadmat(data['movie_similarity_matrix'])[key])
+	
 
 if __name__ == "__main__":
 	# stuff only to run when not called via 'import' here
